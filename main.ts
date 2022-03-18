@@ -1,7 +1,7 @@
 #!/usr/bin/env ts-node
 import * as express from "express";
 
-const app = express();
+const app = express.default();
 
 const slackToken = process.env["SLACK_TOKEN"];
 
