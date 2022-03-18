@@ -23,7 +23,7 @@ app.get("/", (_req, res) => {
 const sendToSlack = async (message: string) => {
   try {
     if (slackWebhook) {
-      console.log(`Trying to send ${message}`);
+      console.log(`Trying to send '${message}'`);
       await axios.default.post(slackWebhook, { text: message });
     }
   } catch (e) {
