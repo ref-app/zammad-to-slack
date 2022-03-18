@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node-script
+#!/usr/bin/env ts-node
 import * as express from "express";
 
 const app = express();
@@ -18,5 +18,8 @@ app.post("/zammad", (req, res) => {
   res.status(200);
   res.end();
 });
+const PORT = 8000;
 
-app.listen(3001);
+console.info(`Starting web server on port ${PORT}`);
+
+app.listen(PORT);
