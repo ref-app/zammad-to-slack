@@ -23,6 +23,7 @@ app.get("/", (_req, res) => {
 const sendToSlack = async (message: string) => {
   try {
     if (slackWebhook) {
+      console.log(`Trying to send ${message}`);
       await axios.default.post(slackWebhook, { text: message });
     }
   } catch (e) {
@@ -32,7 +33,6 @@ const sendToSlack = async (message: string) => {
 
 app.post("/zammad", async (req, res) => {
   const ticket = req.body.ticket ?? {};
-  console.log(ticket);
 
   const customerDomain =
     _.get(ticket, "customer.email")?.split("@")?.[1] ?? "??";
