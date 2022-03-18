@@ -23,7 +23,7 @@ app.get("/", (_req, res) => {
 const sendToSlack = async (message: string) => {
   try {
     if (slackWebhook) {
-      axios.default.post(slackWebhook, { text: message });
+      await axios.default.post(slackWebhook, { text: message });
     }
   } catch (e) {
     console.error(e);
@@ -33,6 +33,7 @@ const sendToSlack = async (message: string) => {
 app.post("/zammad", async (req, res) => {
   const ticket = req.body.ticket ?? {};
   console.log(ticket);
+
   const customerDomain =
     _.get(ticket, "customer.email")?.split("@")?.[1] ?? "??";
   const message = Mustache.render(format, { ...ticket, customerDomain });
