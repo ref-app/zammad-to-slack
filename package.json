@@ -6,6 +6,7 @@
   "author": "Per Bergland <per@refapp.se>",
   "license": "MIT",
   "dependencies": {
+    "@types/lodash": "^4.14.180",
     "axios": "^0.26.1",
     "express": "^4.17.3",
     "lodash": "^4.17.21",
