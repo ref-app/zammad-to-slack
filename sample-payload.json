@@ -317,7 +317,7 @@
       "delivery_status_date": "2022-03-18 15:59:25 UTC"
     },
     "references": null,
-    "reply_to": null,
+    "reply_to": "\"per+xyz@refapp.com\" \u003cper+xyz@refapp.com\u003e",
     "sender": "System",
     "sender_id": 3,
     "subject": "Thanks for your inquiry (test)",

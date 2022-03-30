@@ -10,7 +10,7 @@ const slackWebhook = process.env["SLACK_WEBHOOK"];
 
 const format =
   process.env["MESSAGE_FORMAT"] ??
-  "Zammad ticket {{id}}, state {{state}} from a user at {{customerDomain}}";
+  "Zammad ticket {{ticket.id}}, state {{ticket.state}} from a user at {{customerDomain}}";
 
 app.use(express.json());
 
@@ -23,7 +23,6 @@ app.get("/", (_req, res) => {
 const sendToSlack = async (message: string) => {
   try {
     if (slackWebhook) {
-      console.log(`Trying to send '${message}'`);
       await axios.default.post(slackWebhook, { text: message });
     }
   } catch (e) {
@@ -31,12 +30,23 @@ const sendToSlack = async (message: string) => {
   }
 };
 
-app.post("/zammad", async (req, res) => {
-  const ticket = req.body.ticket ?? {};
+const getSenderDomain = (
+  replyTo: string | undefined,
+  customerEmail: string | undefined
+): string => {
+  console.log(replyTo);
+  const replyToEmail = replyTo ? /<([^>]+)>/i.exec(replyTo)?.[1] : undefined;
+  const domain = (replyToEmail ?? customerEmail)?.split("@")?.[1] ?? "??";
+  return domain;
+};
 
-  const customerDomain =
-    _.get(ticket, "customer.email")?.split("@")?.[1] ?? "??";
-  const message = Mustache.render(format, { ...ticket, customerDomain });
+app.post("/zammad", async (req, res) => {
+  const body = req.body ?? {};
+  const customerDomain = getSenderDomain(
+    _.get(body, "article.reply_to"),
+    _.get(body, "ticket.customer.email")
+  );
+  const message = Mustache.render(format, { ...body, customerDomain });
   await sendToSlack(message);
   res.status(200);
   res.end();
