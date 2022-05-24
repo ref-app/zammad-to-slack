@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env -S yarn exec -s ts-node
 import * as express from "express";
 import * as _ from "lodash";
 import * as axios from "axios";
