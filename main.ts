@@ -41,12 +41,15 @@ const getSenderDomain = (
 
 app.post("/zammad", async (req, res) => {
   const body = req.body ?? {};
-  const customerDomain = getSenderDomain(
-    _.get(body, "article.reply_to"),
-    _.get(body, "ticket.customer.email")
-  );
-  const message = Mustache.render(format, { ...body, customerDomain });
-  await sendToSlack(message);
+  // Only send triggers to Slack if the action is not taken by an Agent.
+  if (_.get(body, "article.sender") !== "Agent") {
+    const customerDomain = getSenderDomain(
+      _.get(body, "article.reply_to"),
+      _.get(body, "ticket.customer.email")
+    );
+    const message = Mustache.render(format, { ...body, customerDomain });
+    await sendToSlack(message);
+  }
   res.status(200);
   res.end();
 });
