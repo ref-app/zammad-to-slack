@@ -4,6 +4,11 @@ A simple web server written in Typescript, nodejs and express to accept inbound 
 
 yarn && yarn start
 
+## Running it locally with Docker
+
+docker build -t zammad-to-slack .
+docker run -d -p 8000:8000 zammad-to-slack
+
 ## Running it in your favourite docker orchestration environment
 
 The docker image is available on public.ecr.aws/refapp/zammad-to-slack:<VERSION>
