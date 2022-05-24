@@ -4,15 +4,11 @@ LABEL Maintainer "Refapp - https://github.com/ref-app"
 
 WORKDIR /usr/src
 
-COPY package.json yarn.lock README.md ./
+COPY package.json yarn.lock ./
 
-RUN yarn
-
-# So we can override it when building the image
-ARG SCRIPT=main.ts
-ENV SCRIPT $SCRIPT
+RUN yarn --production --frozen-lockfile; yarn cache clean
 
 CMD ["yarn","start"]
 
 # These files is most likely to change often so put it last in the Dockerfile for caching reasons
-COPY *.ts ./
+COPY README.md *.ts ./
