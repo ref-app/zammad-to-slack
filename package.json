@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Per Bergland <per@refapp.se>",
   "license": "MIT",
+  "scripts": {
+    "start": "ts-node main.ts"
+  },
   "dependencies": {
     "@types/lodash": "^4.14.180",
     "axios": "^0.26.1",

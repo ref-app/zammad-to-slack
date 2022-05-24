@@ -2,7 +2,7 @@ A simple web server written in Typescript, nodejs and express to accept inbound 
 
 ## Running it locally
 
-yarn && ./main.ts
+yarn && yarn start
 
 ## Running it in your favourite docker orchestration environment
 
