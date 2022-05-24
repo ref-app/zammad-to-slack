@@ -2,23 +2,21 @@
   "name": "zammad-to-slack",
   "version": "0.1.2",
   "description": "Http proxy for anonymising Zammad webhook content and forward to Slack",
-  "main": "index.js",
+  "main": "main.ts",
   "author": "Per Bergland <per@refapp.se>",
   "license": "MIT",
   "scripts": {
     "start": "ts-node main.ts"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.180",
+    "@types/express": "^4.17.13",
+    "@types/lodash.get": "^4.4.7",
+    "@types/mustache": "^4.1.2",
     "axios": "^0.26.1",
     "express": "^4.17.3",
-    "lodash": "^4.17.21",
+    "lodash.get": "^4.4.2",
     "mustache": "^4.2.0",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.2"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.13",
-    "@types/mustache": "^4.1.2"
   }
 }

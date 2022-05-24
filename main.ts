@@ -1,7 +1,7 @@
 #!/usr/bin/env -S yarn exec -s ts-node
-import * as express from "express";
-import * as _ from "lodash";
 import * as axios from "axios";
+import * as express from "express";
+import get from "lodash.get";
 import Mustache from "mustache";
 
 const app = express.default();
@@ -42,10 +42,10 @@ const getSenderDomain = (
 app.post("/zammad", async (req, res) => {
   const body = req.body ?? {};
   // Only send triggers to Slack if the action is not taken by an Agent.
-  if (_.get(body, "article.sender") !== "Agent") {
+  if (get(body, "article.sender") !== "Agent") {
     const customerDomain = getSenderDomain(
-      _.get(body, "article.reply_to"),
-      _.get(body, "ticket.customer.email")
+      get(body, "article.reply_to"),
+      get(body, "ticket.customer.email")
     );
     const message = Mustache.render(format, { ...body, customerDomain });
     await sendToSlack(message);
