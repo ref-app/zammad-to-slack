@@ -34,7 +34,6 @@ const getSenderDomain = (
   replyTo: string | undefined,
   customerEmail: string | undefined
 ): string => {
-  console.log(replyTo);
   const replyToEmail = replyTo ? /<([^>]+)>/i.exec(replyTo)?.[1] : undefined;
   const domain = (replyToEmail ?? customerEmail)?.split("@")?.[1] ?? "??";
   return domain;
