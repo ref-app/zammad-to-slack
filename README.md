@@ -2,12 +2,16 @@ A simple web server written in Typescript, nodejs and express to accept inbound 
 
 ## Running it locally
 
+```sh
 yarn && yarn start
+```
 
 ## Running it locally with Docker
 
+```sh
 docker build -t zammad-to-slack .
 docker run -d -p 8000:8000 zammad-to-slack
+```
 
 ## Running it in your favourite docker orchestration environment
 
