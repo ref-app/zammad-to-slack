@@ -6,7 +6,7 @@
   "author": "Per Bergland <per@refapp.se>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node main.ts",
+    "dev": "node --watch --watch-preserve-output -r ts-node/register main.ts",
     "start": "node --experimental-strip-types main.ts"
   },
   "dependencies": {
