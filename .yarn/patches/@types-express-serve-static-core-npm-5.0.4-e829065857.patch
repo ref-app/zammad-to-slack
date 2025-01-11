@@ -1,0 +1,16 @@
+diff --git a/index.d.ts b/index.d.ts
+index 110ed41182d1378dc377bea811f00a42b89562b5..0d578aa9756ed85b954ec778825101838c76ad60 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -632,6 +632,11 @@ export interface Request<
+     // body: { username: string; password: string; remember: boolean; title: string; };
+     body: ReqBody;
+ 
++    /**
++     * Might be set by a body parsing middleware to be the original value pre-parsing
++     */
++    rawBody?: any;
++
+     // cookies: { string; remember: boolean; };
+     cookies: any;
+ 

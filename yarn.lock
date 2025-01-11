@@ -85,7 +85,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-serve-static-core@npm:^5.0.0":
+"@types/express-serve-static-core@npm:5.0.4":
   version: 5.0.4
   resolution: "@types/express-serve-static-core@npm:5.0.4"
   dependencies:
@@ -94,6 +94,18 @@ __metadata:
     "@types/range-parser": "npm:*"
     "@types/send": "npm:*"
   checksum: 10c0/e469d179a8815703f0be495f400713394ddccaf37d1fab90907d2ec0b19b03df4db20a6bbde026ba0d218a817ed22c3ef3934d429649b1ce66d26084f5105eae
+  languageName: node
+  linkType: hard
+
+"@types/express-serve-static-core@patch:@types/express-serve-static-core@npm%3A5.0.4#~/.yarn/patches/@types-express-serve-static-core-npm-5.0.4-e829065857.patch":
+  version: 5.0.4
+  resolution: "@types/express-serve-static-core@patch:@types/express-serve-static-core@npm%3A5.0.4#~/.yarn/patches/@types-express-serve-static-core-npm-5.0.4-e829065857.patch::version=5.0.4&hash=34bab6"
+  dependencies:
+    "@types/node": "npm:*"
+    "@types/qs": "npm:*"
+    "@types/range-parser": "npm:*"
+    "@types/send": "npm:*"
+  checksum: 10c0/f8d44a02e47903fe9cf79ebbc5c3b0b6bf9cd0237475ed353ff936ac1450e40a7f94118886ad243782682beb6e4d46c1e65d05184ba90a6e50aba8d3912ead7d
   languageName: node
   linkType: hard
 
@@ -152,6 +164,15 @@ __metadata:
   version: 17.0.21
   resolution: "@types/node@npm:17.0.21"
   checksum: 10c0/57a9ce212da7878fddd4e9ef3f83c0f395e1e71c032b3112f4163f357a87b949c392dd9280ae806bca7edfbea335da1cd248fd316c615632b746c87ba1b2ab6e
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.10.5":
+  version: 22.10.5
+  resolution: "@types/node@npm:22.10.5"
+  dependencies:
+    undici-types: "npm:~6.20.0"
+  checksum: 10c0/6a0e7d1fe6a86ef6ee19c3c6af4c15542e61aea2f4cee655b6252efb356795f1f228bc8299921e82924e80ff8eca29b74d9dd0dd5cc1a90983f892f740b480df
   languageName: node
   linkType: hard
 
@@ -247,7 +268,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:^2.0.1":
+"body-parser@npm:2.0.2":
   version: 2.0.2
   resolution: "body-parser@npm:2.0.2"
   dependencies:
@@ -262,6 +283,24 @@ __metadata:
     raw-body: "npm:^3.0.0"
     type-is: "npm:~1.6.18"
   checksum: 10c0/2382c03242f131dae0319225d2cd98e91d7a6c3ebb2ace982513cb2c1670c15a9fc06d3af3ddb03715dc254334f10fa17146cebc17651d1373ad6ff461e4619d
+  languageName: node
+  linkType: hard
+
+"body-parser@patch:body-parser@npm%3A2.0.2#~/.yarn/patches/body-parser-npm-2.0.2-d2cb6000e0.patch":
+  version: 2.0.2
+  resolution: "body-parser@patch:body-parser@npm%3A2.0.2#~/.yarn/patches/body-parser-npm-2.0.2-d2cb6000e0.patch::version=2.0.2&hash=574f08"
+  dependencies:
+    bytes: "npm:3.1.2"
+    content-type: "npm:~1.0.5"
+    debug: "npm:3.1.0"
+    destroy: "npm:1.2.0"
+    http-errors: "npm:2.0.0"
+    iconv-lite: "npm:0.5.2"
+    on-finished: "npm:2.4.1"
+    qs: "npm:6.13.0"
+    raw-body: "npm:^3.0.0"
+    type-is: "npm:~1.6.18"
+  checksum: 10c0/d4f83c6b5b4b988a917a71c0a6f2bd15e23c44e03b1edecb4d931aa2c5a273ea9bfe593da567d3c783e001955bb98c189ff2f2fb1115480698a399557696d368
   languageName: node
   linkType: hard
 
@@ -1118,6 +1157,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici-types@npm:~6.20.0":
+  version: 6.20.0
+  resolution: "undici-types@npm:6.20.0"
+  checksum: 10c0/68e659a98898d6a836a9a59e6adf14a5d799707f5ea629433e025ac90d239f75e408e2e5ff086afc3cace26f8b26ee52155293564593fbb4a2f666af57fc59bf
+  languageName: node
+  linkType: hard
+
 "unpipe@npm:1.0.0, unpipe@npm:~1.0.0":
   version: 1.0.0
   resolution: "unpipe@npm:1.0.0"
@@ -1168,6 +1214,7 @@ __metadata:
     "@types/lodash.get": "npm:^4.4.9"
     "@types/lodash.isplainobject": "npm:^4.0.9"
     "@types/mustache": "npm:^4.2.5"
+    "@types/node": "npm:^22.10.5"
     axios: "npm:^1.7.9"
     express: "npm:^5.0.1"
     lodash.get: "npm:^4.4.2"

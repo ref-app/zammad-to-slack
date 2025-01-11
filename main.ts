@@ -1,13 +1,15 @@
 #!/usr/bin/env -S node -r ts-node/register
 import axios from "axios";
-import express from "express";
+import express, { Response } from "express";
 import get from "lodash.get";
 import isPlainObject from "lodash.isplainobject";
 import Mustache from "mustache";
+import { createHmac } from "node:crypto";
 
 const app = express();
 
 const slackWebhook = process.env["SLACK_WEBHOOK"];
+const hubSecret = process.env["SHA1_HUB_SECRET"];
 
 const format =
   process.env["MESSAGE_FORMAT"] ??
@@ -25,6 +27,8 @@ const sendToSlack = async (message: string) => {
   try {
     if (slackWebhook) {
       await axios.post(slackWebhook, { text: message });
+    } else {
+      console.log({ sendToslack: message });
     }
   } catch (e) {
     console.error(e);
@@ -48,6 +52,14 @@ const end = (res: Response): void => {
 app.post("/zammad", async (req, res) => {
   if (!isPlainObject(req.body)) {
     return end(res);
+  }
+  if (hubSecret) {
+    const hmac = createHmac("sha1", hubSecret);
+    hmac.update(req.rawBody);
+    const token = `sha1=${hmac.digest("hex")}`;
+    if (req.get("x-hub-signature") !== token) {
+      return end(res);
+    }
   }
   const body = req.body;
   // Only send triggers to Slack if the action is not taken by an Agent.

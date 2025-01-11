@@ -1,0 +1,12 @@
+diff --git a/lib/read.js b/lib/read.js
+index 4fd9d406e15f5f07ea518fbbf12feb2fd9f853d0..0d797d387785ae50df2fb508df8fdcabd8affc3d 100644
+--- a/lib/read.js
++++ b/lib/read.js
+@@ -122,6 +122,7 @@ function read (req, res, next, parse, debug, options) {
+         ? iconv.decode(body, encoding)
+         : body
+       req.body = parse(str, encoding)
++      req.rawBody = str
+     } catch (err) {
+       next(createError(400, err, {
+         body: str,
