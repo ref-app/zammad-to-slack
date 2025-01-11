@@ -13,11 +13,13 @@
     "axios": "^1.7.9",
     "express": "^5.0.1",
     "lodash.get": "^4.4.2",
+    "lodash.isplainobject": "^4.0.6",
     "mustache": "^4.2.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/lodash.get": "^4.4.9",
+    "@types/lodash.isplainobject": "^4.0.9",
     "@types/mustache": "^4.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"

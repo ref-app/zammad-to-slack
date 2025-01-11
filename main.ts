@@ -2,6 +2,7 @@
 import axios from "axios";
 import express from "express";
 import get from "lodash.get";
+import isPlainObject from "lodash.isplainobject";
 import Mustache from "mustache";
 
 const app = express();
@@ -40,7 +41,11 @@ const getSenderDomain = (
 };
 
 app.post("/zammad", async (req, res) => {
-  const body = req.body ?? {};
+  if (!isPlainObject(req.body)) {
+    res.status(200);
+    res.end();
+  }
+  const body = req.body;
   // Only send triggers to Slack if the action is not taken by an Agent.
   if (get(body, "article.sender") !== "Agent") {
     const customerDomain = getSenderDomain(
