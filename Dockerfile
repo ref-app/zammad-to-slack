@@ -12,7 +12,7 @@ COPY package.json yarn.lock .yarnrc.yml ./
 # Emulate it by doing a full immutable install that might fail, followed by the
 # production install that will strip development dependencies.
 RUN yarn install --immutable
-RUN yarn workspaces focus --all --production
+RUN yarn workspaces focus --all --production; yarn cache clean --all
 
 CMD ["yarn","start"]
 
