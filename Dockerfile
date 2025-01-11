@@ -1,12 +1,18 @@
-FROM node:16-alpine3.14
+FROM node:22.13.0-alpine3.21
 
 LABEL Maintainer "Refapp - https://github.com/ref-app"
 
 WORKDIR /usr/src
 
-COPY package.json yarn.lock ./
+RUN corepack enable
 
-RUN yarn --production --frozen-lockfile; yarn cache clean
+COPY package.json yarn.lock .yarnrc.yml ./
+
+# Lost --frozen-lockfile: https://github.com/yarnpkg/berry/issues/1803
+# Emulate it by doing a full immutable install that might fail, followed by the
+# production install that will strip development dependencies.
+RUN yarn install --immutable
+RUN yarn workspaces focus --all --production
 
 CMD ["yarn","start"]
 
