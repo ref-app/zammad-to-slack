@@ -2,13 +2,17 @@
   "name": "zammad-to-slack",
   "version": "0.1.3",
   "description": "Http proxy for anonymising Zammad webhook content and forward to Slack",
-  "main": "main.ts",
-  "author": "Per Bergland <per@refapp.se>",
   "license": "MIT",
+  "author": "Per Bergland <per@refapp.se>",
+  "main": "main.ts",
   "scripts": {
     "dev": "node --watch --watch-preserve-output -r ts-node/register main.ts",
     "format": "prettier --write main.ts",
     "start": "node --experimental-strip-types main.ts"
+  },
+  "resolutions": {
+    "@types/express-serve-static-core@npm:^5.0.0": "patch:@types/express-serve-static-core@npm%3A5.0.4#~/.yarn/patches/@types-express-serve-static-core-npm-5.0.4-e829065857.patch",
+    "body-parser@npm:^2.0.1": "patch:body-parser@npm%3A2.0.2#~/.yarn/patches/body-parser-npm-2.0.2-d2cb6000e0.patch"
   },
   "dependencies": {
     "axios": "^1.7.9",
@@ -27,9 +31,5 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   },
-  "packageManager": "yarn@4.6.0",
-  "resolutions": {
-    "@types/express-serve-static-core@npm:^5.0.0": "patch:@types/express-serve-static-core@npm%3A5.0.4#~/.yarn/patches/@types-express-serve-static-core-npm-5.0.4-e829065857.patch",
-    "body-parser@npm:^2.0.1": "patch:body-parser@npm%3A2.0.2#~/.yarn/patches/body-parser-npm-2.0.2-d2cb6000e0.patch"
-  }
+  "packageManager": "yarn@4.6.0"
 }
