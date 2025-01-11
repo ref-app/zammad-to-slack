@@ -40,10 +40,14 @@ const getSenderDomain = (
   return domain;
 };
 
+const end = (res: Response): void => {
+  res.status(200);
+  res.end();
+};
+
 app.post("/zammad", async (req, res) => {
   if (!isPlainObject(req.body)) {
-    res.status(200);
-    res.end();
+    return end(res);
   }
   const body = req.body;
   // Only send triggers to Slack if the action is not taken by an Agent.
@@ -55,8 +59,7 @@ app.post("/zammad", async (req, res) => {
     const message = Mustache.render(format, { ...body, customerDomain });
     await sendToSlack(message);
   }
-  res.status(200);
-  res.end();
+  return end(res);
 });
 const PORT = 8000;
 
