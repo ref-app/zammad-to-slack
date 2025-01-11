@@ -1,5 +1,6 @@
 #!/usr/bin/env -S node -r ts-node/register
 import axios from "axios";
+import auth from "basic-auth";
 import express, { Response } from "express";
 import get from "lodash.get";
 import isPlainObject from "lodash.isplainobject";
@@ -10,6 +11,8 @@ const app = express();
 
 const slackWebhook = process.env["SLACK_WEBHOOK"];
 const hubSecret = process.env["SHA1_HUB_SECRET"];
+const basicUser = process.env["BASIC_USERNAME"];
+const basicPassword = process.env["BASIC_PASSWORD"];
 
 const format =
   process.env["MESSAGE_FORMAT"] ??
@@ -58,6 +61,12 @@ app.post("/zammad", async (req, res) => {
     hmac.update(req.rawBody);
     const token = `sha1=${hmac.digest("hex")}`;
     if (req.get("x-hub-signature") !== token) {
+      return end(res);
+    }
+  }
+  if (basicUser && basicPassword) {
+    const credentials = auth(req);
+    if (credentials?.name !== basicUser || credentials.pass !== basicPassword) {
       return end(res);
     }
   }
