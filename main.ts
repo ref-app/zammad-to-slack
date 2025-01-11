@@ -1,7 +1,7 @@
 #!/usr/bin/env -S node -r ts-node/register
 import axios from "axios";
 import auth from "basic-auth";
-import express, { Response } from "express";
+import express, { type Response } from "express";
 import get from "lodash.get";
 import isPlainObject from "lodash.isplainobject";
 import Mustache from "mustache";
