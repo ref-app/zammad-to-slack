@@ -1,6 +1,6 @@
-#!/usr/bin/env -S yarn exec -s ts-node
 import * as axios from "axios";
 import * as express from "express";
+#!/usr/bin/env -S node -r ts-node/register
 import get from "lodash.get";
 import Mustache from "mustache";
 
