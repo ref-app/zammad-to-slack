@@ -33,7 +33,7 @@ const sendToSlack = async (message: string) => {
 
 const getSenderDomain = (
   replyTo: string | undefined,
-  customerEmail: string | undefined
+  customerEmail: string | undefined,
 ): string => {
   const replyToEmail = replyTo ? /<([^>]+)>/i.exec(replyTo)?.[1] : undefined;
   const domain = (replyToEmail ?? customerEmail)?.split("@")?.[1] ?? "??";
@@ -50,7 +50,7 @@ app.post("/zammad", async (req, res) => {
   if (get(body, "article.sender") !== "Agent") {
     const customerDomain = getSenderDomain(
       get(body, "article.reply_to"),
-      get(body, "ticket.customer.email")
+      get(body, "ticket.customer.email"),
     );
     const message = Mustache.render(format, { ...body, customerDomain });
     await sendToSlack(message);
