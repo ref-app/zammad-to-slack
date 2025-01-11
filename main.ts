@@ -1,10 +1,10 @@
-import * as axios from "axios";
-import * as express from "express";
 #!/usr/bin/env -S node -r ts-node/register
+import axios from "axios";
+import express from "express";
 import get from "lodash.get";
 import Mustache from "mustache";
 
-const app = express.default();
+const app = express();
 
 const slackWebhook = process.env["SLACK_WEBHOOK"];
 
@@ -23,7 +23,7 @@ app.get("/", (_req, res) => {
 const sendToSlack = async (message: string) => {
   try {
     if (slackWebhook) {
-      await axios.default.post(slackWebhook, { text: message });
+      await axios.post(slackWebhook, { text: message });
     }
   } catch (e) {
     console.error(e);
