@@ -6,9 +6,9 @@
   "author": "Per Bergland <per@refapp.se>",
   "main": "main.ts",
   "scripts": {
-    "dev": "node --watch --watch-preserve-output -r ts-node/register main.ts",
+    "dev": "node --watch --watch-preserve-output --pending-deprecation -r ts-node/register main.ts",
     "format": "prettier --write main.ts",
-    "start": "node --experimental-strip-types main.ts"
+    "start": "node --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types main.ts"
   },
   "resolutions": {
     "@types/express-serve-static-core@npm:^5.0.0": "patch:@types/express-serve-static-core@npm%3A5.0.4#~/.yarn/patches/@types-express-serve-static-core-npm-5.0.4-e829065857.patch",
