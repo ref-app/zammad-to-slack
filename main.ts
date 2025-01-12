@@ -30,8 +30,6 @@ const sendToSlack = async (message: string) => {
   try {
     if (slackWebhook) {
       await axios.post(slackWebhook, { text: message });
-    } else {
-      console.log({ sendToslack: message });
     }
   } catch (e) {
     console.error(e);
