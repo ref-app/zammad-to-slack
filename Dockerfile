@@ -7,6 +7,7 @@ WORKDIR /usr/src
 RUN corepack enable
 
 COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
 
 # Lost --frozen-lockfile: https://github.com/yarnpkg/berry/issues/1803
 # Emulate it by doing a full immutable install that might fail, followed by the
