@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node -r ts-node/register
+#!/usr/bin/env -S node --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types
 import axios from "axios";
 import auth from "basic-auth";
 import fastify, { type FastifyReply } from "fastify";
