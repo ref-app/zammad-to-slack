@@ -65,36 +65,47 @@ const body = {
 } as const;
 type Body = FromSchema<typeof body>;
 
-app.post<{ Body: Body }>("/zammad", { schema: { body } }, async (req, res) => {
-  if (hubSecret) {
-    if (req.rawBody === undefined) {
+app.post<{ Body: Body }>(
+  "/zammad",
+  { schema: { body }, attachValidation: true },
+  async (req, res) => {
+    if (req.validationError !== undefined) {
+      console.error(req.validationError);
       return end(res);
     }
-    const hmac = createHmac("sha1", hubSecret);
-    hmac.update(req.rawBody);
-    const token = `sha1=${hmac.digest("hex")}`;
-    if (req.headers["x-hub-signature"] !== token) {
-      return end(res);
+    if (hubSecret) {
+      if (req.rawBody === undefined) {
+        return end(res);
+      }
+      const hmac = createHmac("sha1", hubSecret);
+      hmac.update(req.rawBody);
+      const token = `sha1=${hmac.digest("hex")}`;
+      if (req.headers["x-hub-signature"] !== token) {
+        return end(res);
+      }
     }
-  }
-  if (basicUser && basicPassword) {
-    const credentials = auth(req);
-    if (credentials?.name !== basicUser || credentials.pass !== basicPassword) {
-      return end(res);
+    if (basicUser && basicPassword) {
+      const credentials = auth(req);
+      if (
+        credentials?.name !== basicUser ||
+        credentials.pass !== basicPassword
+      ) {
+        return end(res);
+      }
     }
-  }
-  const body = req.body;
-  // Only send triggers to Slack if the action is not taken by an Agent.
-  if (body.article.sender !== "Agent") {
-    const customerDomain = getSenderDomain(
-      body.article.reply_to,
-      body.ticket?.customer?.email,
-    );
-    const message = Mustache.render(format, { ...body, customerDomain });
-    await sendToSlack(message);
-  }
-  return end(res);
-});
+    const body = req.body;
+    // Only send triggers to Slack if the action is not taken by an Agent.
+    if (body.article.sender !== "Agent") {
+      const customerDomain = getSenderDomain(
+        body.article.reply_to,
+        body.ticket?.customer?.email,
+      );
+      const message = Mustache.render(format, { ...body, customerDomain });
+      await sendToSlack(message);
+    }
+    return end(res);
+  },
+);
 const PORT = 8000;
 
 console.info(`Starting web server on port ${PORT}`);
