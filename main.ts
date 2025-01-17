@@ -1,13 +1,13 @@
 #!/usr/bin/env -S node -r ts-node/register
 import axios from "axios";
 import auth from "basic-auth";
-import express, { type Response } from "express";
-import get from "lodash.get";
-import isPlainObject from "lodash.isplainobject";
+import fastify, { type FastifyReply } from "fastify";
+import fastifyRawBody from "fastify-raw-body";
+import { type FromSchema } from "json-schema-to-ts";
 import Mustache from "mustache";
 import { createHmac } from "node:crypto";
 
-const app = express();
+const app = fastify();
 
 const slackWebhook = process.env["SLACK_WEBHOOK"];
 const hubSecret = process.env["SHA1_HUB_SECRET"];
@@ -18,12 +18,10 @@ const format =
   process.env["MESSAGE_FORMAT"] ??
   "Zammad ticket {{ticket.id}}, state {{ticket.state}} from a user at {{customerDomain}}";
 
-app.use(express.json());
+app.register(fastifyRawBody);
 
 app.get("/", (_req, res) => {
-  res.write("Nothing to see here, move on");
-  res.status(200);
-  res.end();
+  res.code(200).send("Nothing to see here, move on");
 });
 
 const sendToSlack = async (message: string) => {
@@ -45,20 +43,37 @@ const getSenderDomain = (
   return domain;
 };
 
-const end = (res: Response): void => {
+const end = (res: FastifyReply): void => {
   res.status(200);
-  res.end();
 };
 
-app.post("/zammad", async (req, res) => {
-  if (!isPlainObject(req.body)) {
-    return end(res);
-  }
+const body = {
+  type: "object",
+  properties: {
+    article: {
+      type: "object",
+      properties: { sender: { type: "string" }, reply_to: { type: "string" } },
+    },
+    ticket: {
+      type: "object",
+      properties: {
+        customer: { type: "object", properties: { email: { type: "string" } } },
+      },
+    },
+  },
+  required: ["article"],
+} as const;
+type Body = FromSchema<typeof body>;
+
+app.post<{ Body: Body }>("/zammad", { schema: { body } }, async (req, res) => {
   if (hubSecret) {
+    if (req.rawBody === undefined) {
+      return end(res);
+    }
     const hmac = createHmac("sha1", hubSecret);
     hmac.update(req.rawBody);
     const token = `sha1=${hmac.digest("hex")}`;
-    if (req.get("x-hub-signature") !== token) {
+    if (req.headers["x-hub-signature"] !== token) {
       return end(res);
     }
   }
@@ -70,10 +85,10 @@ app.post("/zammad", async (req, res) => {
   }
   const body = req.body;
   // Only send triggers to Slack if the action is not taken by an Agent.
-  if (get(body, "article.sender") !== "Agent") {
+  if (body.article.sender !== "Agent") {
     const customerDomain = getSenderDomain(
-      get(body, "article.reply_to"),
-      get(body, "ticket.customer.email"),
+      body.article.reply_to,
+      body.ticket?.customer?.email,
     );
     const message = Mustache.render(format, { ...body, customerDomain });
     await sendToSlack(message);
@@ -84,4 +99,4 @@ const PORT = 8000;
 
 console.info(`Starting web server on port ${PORT}`);
 
-app.listen(PORT);
+app.listen({ port: PORT });
