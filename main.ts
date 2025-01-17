@@ -3,9 +3,9 @@ import axios from "axios";
 import auth from "basic-auth";
 import fastify, { type FastifyReply } from "fastify";
 import fastifyRawBody from "fastify-raw-body";
-import { type FromSchema } from "json-schema-to-ts";
 import Mustache from "mustache";
 import { createHmac } from "node:crypto";
+import type FromSchema from "./json-schema-to-ts";
 
 const app = fastify();
 
