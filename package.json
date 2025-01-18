@@ -4,6 +4,9 @@
   "description": "Http proxy for anonymising Zammad webhook content and forward to Slack",
   "license": "MIT",
   "author": "Per Bergland <per@refapp.se>",
+  "contributors": [
+    "Martijn van der Ven <martijn.vanderven@refapp.com>"
+  ],
   "main": "main.ts",
   "scripts": {
     "dev": "node --watch --watch-preserve-output --pending-deprecation -r ts-node/register main.ts",
