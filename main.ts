@@ -41,7 +41,10 @@ const getSenderDomain = (
   return domain;
 };
 
-const end = (res: FastifyReply): void => {
+const end = (res: FastifyReply, error?: string): void => {
+  if (error) {
+    console.error(error);
+  }
   res.status(200);
 };
 
@@ -74,13 +77,19 @@ app.register(fastifyRawBody).then(() => {
       }
       if (hubSecret) {
         if (req.rawBody === undefined) {
-          return end(res);
+          return end(
+            res,
+            "Unable to check signature when rawBody is undefined",
+          );
         }
         const hmac = createHmac("sha1", hubSecret);
         hmac.update(req.rawBody);
         const token = `sha1=${hmac.digest("hex")}`;
         if (req.headers["x-hub-signature"] !== token) {
-          return end(res);
+          return end(
+            res,
+            `Received signature ${req.headers["x-hub-signature"]} does not match calculated signature ${token}`,
+          );
         }
       }
       if (basicUser && basicPassword) {
@@ -89,7 +98,10 @@ app.register(fastifyRawBody).then(() => {
           credentials?.name !== basicUser ||
           credentials.pass !== basicPassword
         ) {
-          return end(res);
+          return end(
+            res,
+            "Received username and password did not match those in the environment",
+          );
         }
       }
       const body = req.body;
