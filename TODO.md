@@ -29,3 +29,16 @@ this does not fulfill that purpose.
 
 We might have to swap ts-node for something else to keep the same developer
 experience as today.
+
+## Switch logging to Pino
+
+- [ ] change `console` calls for `request.log` or `fastify.log`
+
+Fastify is already including pino as a dependency whether it is being used or
+not, so this will not add anything to the size of the project. Using this for
+logging changes logs into JSON which is hopefully easy to parse (e.g. in
+Datadog) and associates logs to specific requests.
+
+See also [the Logging reference documentation][docs] from Fastify.
+
+[docs]: https://fastify.dev/docs/v5.2.x/Reference/Logging/
