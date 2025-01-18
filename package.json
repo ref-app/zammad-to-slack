@@ -9,7 +9,7 @@
   ],
   "main": "main.ts",
   "scripts": {
-    "dev": "node --watch --watch-preserve-output --pending-deprecation -r ts-node/register main.ts",
+    "dev": "node --watch --watch-preserve-output --pending-deprecation --env-file-if-exists=.env -r ts-node/register main.ts",
     "format": "prettier --write main.ts json-schema-to-ts.ts",
     "start": "node --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types main.ts"
   },
