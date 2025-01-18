@@ -112,7 +112,7 @@ const PORT = 8000;
 app.listen({ port: PORT, host: HOST }, function (err, address) {
   if (err) {
     console.error(err);
-    process.exit(1)
+    process.exit(1);
   }
   console.info(`Web server started on ${address}`);
 });
