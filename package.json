@@ -1,6 +1,6 @@
 {
   "name": "zammad-to-slack",
-  "version": "0.2.0-rc.3",
+  "version": "0.2.0-rc.4",
   "description": "Http proxy for anonymising Zammad webhook content and forward to Slack",
   "license": "MIT",
   "author": "Per Bergland <per@refapp.se>",
