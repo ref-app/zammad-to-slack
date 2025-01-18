@@ -18,8 +18,6 @@ const format =
   process.env["MESSAGE_FORMAT"] ??
   "Zammad ticket {{ticket.id}}, state {{ticket.state}} from a user at {{customerDomain}}";
 
-app.register(fastifyRawBody);
-
 app.get("/", (_req, res) => {
   res.code(200).send("Nothing to see here, move on");
 });
@@ -65,47 +63,50 @@ const body = {
 } as const;
 type Body = FromSchema<typeof body>;
 
-app.post<{ Body: Body }>(
-  "/zammad",
-  { schema: { body }, attachValidation: true },
-  async (req, res) => {
-    if (req.validationError !== undefined) {
-      console.error(req.validationError);
+app.register(fastifyRawBody).then(() => {
+  app.post<{ Body: Body }>(
+    "/zammad",
+    { schema: { body }, attachValidation: true },
+    async (req, res) => {
+      if (req.validationError !== undefined) {
+        console.error(req.validationError);
+        return end(res);
+      }
+      if (hubSecret) {
+        if (req.rawBody === undefined) {
+          return end(res);
+        }
+        const hmac = createHmac("sha1", hubSecret);
+        hmac.update(req.rawBody);
+        const token = `sha1=${hmac.digest("hex")}`;
+        if (req.headers["x-hub-signature"] !== token) {
+          return end(res);
+        }
+      }
+      if (basicUser && basicPassword) {
+        const credentials = auth(req);
+        if (
+          credentials?.name !== basicUser ||
+          credentials.pass !== basicPassword
+        ) {
+          return end(res);
+        }
+      }
+      const body = req.body;
+      // Only send triggers to Slack if the action is not taken by an Agent.
+      if (body.article.sender !== "Agent") {
+        const customerDomain = getSenderDomain(
+          body.article.reply_to,
+          body.ticket?.customer?.email,
+        );
+        const message = Mustache.render(format, { ...body, customerDomain });
+        await sendToSlack(message);
+      }
       return end(res);
-    }
-    if (hubSecret) {
-      if (req.rawBody === undefined) {
-        return end(res);
-      }
-      const hmac = createHmac("sha1", hubSecret);
-      hmac.update(req.rawBody);
-      const token = `sha1=${hmac.digest("hex")}`;
-      if (req.headers["x-hub-signature"] !== token) {
-        return end(res);
-      }
-    }
-    if (basicUser && basicPassword) {
-      const credentials = auth(req);
-      if (
-        credentials?.name !== basicUser ||
-        credentials.pass !== basicPassword
-      ) {
-        return end(res);
-      }
-    }
-    const body = req.body;
-    // Only send triggers to Slack if the action is not taken by an Agent.
-    if (body.article.sender !== "Agent") {
-      const customerDomain = getSenderDomain(
-        body.article.reply_to,
-        body.ticket?.customer?.email,
-      );
-      const message = Mustache.render(format, { ...body, customerDomain });
-      await sendToSlack(message);
-    }
-    return end(res);
-  },
-);
+    },
+  );
+});
+
 const HOST = "::";
 const PORT = 8000;
 

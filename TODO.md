@@ -5,7 +5,8 @@
 - [ ] add `"type": "module"` to package.json
 - [ ] make sure `npm run dev` still shows TypeScript errors in the terminal
 
-To get rid of `--disable-warning=MODULE_TYPELESS_PACKAGE_JSON` when running in
+To enable using top-level awaits (e.g. for `app.register(fastifyRawBody)`) and
+to get rid of `--disable-warning=MODULE_TYPELESS_PACKAGE_JSON` when running in
 production, the project must be marked as a module. This will break the current
 development setup with ts-node. We can _almost_ get there in development by:
 
