@@ -1,9 +1,29 @@
 A simple web server written in Typescript, nodejs and express to accept inbound webhook calls from Zammad and forward only the event without content to a slack channel
 
-## Running it locally
+## Developing
+
+This will restart on file changes and report on TypeScript errors.
 
 ```sh
-yarn && yarn start
+fnm use
+yarn install
+yarn dev
+```
+
+## Running it locally
+
+This will not restart for file changes and will ignore TypeScript.
+
+```sh
+fnm use
+yarn install
+yarn start
+```
+
+If you want to exclude development dependencies completely, run:
+
+```sh
+yarn workspaces focus --all --production
 ```
 
 ## Running it locally with Docker
