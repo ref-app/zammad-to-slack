@@ -15,6 +15,6 @@ RUN yarn install --immutable; yarn workspaces focus --all --production
 
 FROM gcr.io/distroless/nodejs22-debian12:nonroot
 COPY --from=build /usr/src/node_modules /app/node_modules
-COPY main.ts /app/
+COPY main.ts LICENSE /app/
 WORKDIR /app
 CMD ["--disable-warning=ExperimentalWarning", "--disable-warning=MODULE_TYPELESS_PACKAGE_JSON", "--experimental-strip-types", "main.ts"]
