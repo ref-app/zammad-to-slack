@@ -58,11 +58,13 @@ const body = {
     ticket: {
       type: "object",
       properties: {
+        article_count: { type: "number" },
         customer: { type: "object", properties: { email: { type: "string" } } },
       },
+      required: ["article_count"],
     },
   },
-  required: ["article"],
+  required: ["ticket", "article"],
 } as const;
 type Body = FromSchema<typeof body>;
 
@@ -106,7 +108,7 @@ app.register(fastifyRawBody).then(() => {
       }
       const body = req.body;
       // Only send triggers to Slack if the action is not taken by an Agent.
-      if (body.article.sender !== "Agent") {
+      if (body.article.sender !== "Agent" || body.ticket.article_count === 1) {
         const customerDomain = getSenderDomain(
           body.article.reply_to,
           body.ticket?.customer?.email,
