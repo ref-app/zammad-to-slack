@@ -33,6 +33,17 @@ docker build -t zammad-to-slack .
 docker run -d -p 8000:8000 zammad-to-slack
 ```
 
+## Testing
+
+If the application is running, submit the sample payload from this repository:
+
+```sh
+curl --request POST\
+     --data @sample-payload.json\
+     --header "Content-Type: application/json"\
+     http://localhost:8000/zammad
+```
+
 ## Running it in your favourite docker orchestration environment
 
 The docker image is available on public.ecr.aws/refapp/zammad-to-slack:<VERSION>
